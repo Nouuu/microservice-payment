@@ -1,0 +1,182 @@
+openapi: 3.0.2
+info:
+  title: BoissiPay
+  description: "Microservice payment API specification"
+  contact:
+    name: "BoissiPayMe"
+    email: "boissi.payme@gmail.com"
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+servers:
+  - url: https://boissipay.fr
+tags:
+  - name: payment
+    description: Operations about payment
+paths:
+  /payment:
+    post:
+      tags:
+        - payment
+      summary: Process payment
+      description: Create payment functionality
+      operationId: createPayment
+      requestBody:
+        description: Created payment object
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Payment'
+        required: true
+      responses:
+        '200':
+          description: Payment succeeded
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        400:
+          description: Payment failed
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+              example: {
+                "payment_status": "failure",
+                "checkout_id": "f9a8d8a0-c8b9-4b1a-b1a1-f9a8d8a0c8b9"
+              }
+      x-codegen-request-body-name: body
+    get:
+      tags:
+        - payment
+      summary: Get succeeded payments
+      description: Get succeeded payments that has been processed
+      operationId: getSucceededPayments
+      responses:
+        200:
+          description: successful operation
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+  /payment/{checkout_id}:
+    get:
+      tags:
+        - payment
+      summary: Get payment by checkout id
+      description: Get payment by checkout id
+      operationId: getPaymentByCheckoutId
+      parameters:
+        - name: checkout_id
+          in: path
+          description: Checkout id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "f9a8d8a0-c8b9-4b1a-b1a1-f9a8d8a0c8b9"
+      responses:
+        200:
+          description: successful operation
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Payment'
+        404:
+          description: Payment not found
+      x-codegen-request-name: getPaymentByCheckoutId
+    delete:
+      tags:
+        - payment
+      summary: Delete payment by checkout id
+      description: Delete payment by checkout id
+      operationId: deletePaymentByCheckoutId
+      parameters:
+        - name: checkout_id
+          in: path
+          description: Checkout id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "f9a8d8a0-c8b9-4b1a-b1a1-f9a8d8a0c8b9"
+      responses:
+        204:
+          description: successful operation
+        404:
+          description: Payment not found
+      x-codegen-request-name: deletePaymentByCheckoutId
+
+components:
+  schemas:
+    BuyerInfo:
+      type: object
+      properties:
+        id:
+          required: true
+          type: string
+          format: uuid
+          example: "f8a8c8e7-b8b6-4b8b-8b8b-8b8b8b8b8b8b"
+        name:
+          required: true
+          type: string
+          example: John Doe
+    PaymentOrder:
+      type: object
+      properties:
+        seller_account:
+          required: true
+          type: string
+          example: "John Doe"
+        amount:
+          required: true
+          type: number
+          format: double
+          example: 10.5
+        currency:
+          required: true
+          type: string
+          description: Currency of the amount respecting ISO 4217
+          minLength: 3
+          maxLength: 4
+          example: "EUR"
+        payment_order_id:
+          required: true
+          type: string
+          format: uuid
+          example: "f8a8c8e7-b8b6-4b8b-8b8b-8b8b8b8b8b8b"
+    Payment:
+      type: object
+      properties:
+        buyer_info:
+          $ref: '#/components/schemas/BuyerInfo'
+        checkout_id:
+          required: true
+          type: string
+          format: uuid
+          example: "f8a8c8e7-b8b6-4b8b-8b8b-8b8b8b8b8b8b"
+        credit_card_info:
+          type: string
+          description: Encrypted credit card information.
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        payment_orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentOrder'
+    PaymentStatus:
+      type: string
+      enum:
+        - success
+        - failure
+    PaymentResponse:
+      type: object
+      properties:
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatus'
+        checkout_id:
+          type: string
+          format: uuid
+          example: "f8a8c8e7-b8b6-4b8b-8b8b-8b8b8b8b8b8b"
