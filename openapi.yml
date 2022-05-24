@@ -28,7 +28,7 @@ paths:
           'application/json':
             schema:
               $ref: '#/components/schemas/Payment'
-        required: true
+
       responses:
         '200':
           description: Payment succeeded
@@ -116,35 +116,29 @@ components:
       type: object
       properties:
         id:
-          required: true
           type: string
           format: uuid
           example: "f8a8c8e7-b8b6-4b8b-8b8b-8b8b8b8b8b8b"
         name:
-          required: true
           type: string
           example: John Doe
     PaymentOrder:
       type: object
       properties:
         seller_account:
-          required: true
           type: string
           example: "John Doe"
         amount:
-          required: true
           type: number
           format: double
           example: 10.5
         currency:
-          required: true
           type: string
           description: Currency of the amount respecting ISO 4217
           minLength: 3
           maxLength: 4
           example: "EUR"
         payment_order_id:
-          required: true
           type: string
           format: uuid
           example: "f8a8c8e7-b8b6-4b8b-8b8b-8b8b8b8b8b8b"
@@ -154,7 +148,6 @@ components:
         buyer_info:
           $ref: '#/components/schemas/BuyerInfo'
         checkout_id:
-          required: true
           type: string
           format: uuid
           example: "f8a8c8e7-b8b6-4b8b-8b8b-8b8b8b8b8b8b"
