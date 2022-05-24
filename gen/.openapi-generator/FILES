@@ -1,0 +1,16 @@
+.openapi-generator-ignore
+README.md
+pom.xml
+src/main/java/org/openapitools/OpenAPI2SpringBoot.java
+src/main/java/org/openapitools/RFC3339DateFormat.java
+src/main/java/org/openapitools/api/ApiUtil.java
+src/main/java/org/openapitools/api/PaymentApi.java
+src/main/java/org/openapitools/api/PaymentApiController.java
+src/main/java/org/openapitools/configuration/HomeController.java
+src/main/java/org/openapitools/configuration/OpenAPIDocumentationConfig.java
+src/main/java/org/openapitools/model/BuyerInfo.java
+src/main/java/org/openapitools/model/Payment.java
+src/main/java/org/openapitools/model/PaymentOrder.java
+src/main/java/org/openapitools/model/PaymentResponse.java
+src/main/java/org/openapitools/model/PaymentStatus.java
+src/main/resources/application.properties
