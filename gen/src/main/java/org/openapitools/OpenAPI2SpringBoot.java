@@ -8,32 +8,21 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"org.openapitools", "org.openapitools.api" , "org.openapitools.configuration"})
+@ComponentScan(basePackages = {"org.openapitools", "org.openapitools.api", "org.openapitools.configuration"})
 public class OpenAPI2SpringBoot implements CommandLineRunner {
+
+    public static void main(String[] args) throws Exception {
+        new SpringApplication(OpenAPI2SpringBoot.class).run(args);
+    }
 
     @Override
     public void run(String... arg0) throws Exception {
         if (arg0.length > 0 && arg0[0].equals("exitcode")) {
             throw new ExitException();
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        new SpringApplication(OpenAPI2SpringBoot.class).run(args);
-    }
-
-    static class ExitException extends RuntimeException implements ExitCodeGenerator {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public int getExitCode() {
-            return 10;
-        }
-
     }
 
     @Bean
@@ -52,6 +41,16 @@ public class OpenAPI2SpringBoot implements CommandLineRunner {
     @Bean
     public Module jsonNullableModule() {
         return new JsonNullableModule();
+    }
+
+    static class ExitException extends RuntimeException implements ExitCodeGenerator {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public int getExitCode() {
+            return 10;
+        }
+
     }
 
 }
