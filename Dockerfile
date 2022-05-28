@@ -3,11 +3,15 @@ WORKDIR /app
 COPY pom.xml .
 COPY ./boissipay/ ./boissipay/
 COPY ./specification/ ./specification/
-RUN mvn clean install -DskipTests
+RUN mvn clean install
 
 FROM openjdk:17-alpine
 WORKDIR /app
-COPY --from=build /app/boissipay/target/boissipay*.jar /app/boissipay.jar
+COPY --from=build /app/boissipay/target/*.jar /app/boissipay.jar
 
 EXPOSE 8080
-CMD ["java", "-jar", "/app/boissipay.jar"]
+
+ENV REDIS_HOST=localhost\
+    REDIS_PORT=6379
+
+CMD ["java", "-jar","-Dspring.profiles.active=env", "/app/boissipay.jar"]

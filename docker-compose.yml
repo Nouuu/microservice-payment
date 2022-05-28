@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    restart: unless-stopped
+    networks:
+      - boissi-net
+  boissipay:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - boissi-net
+    depends_on:
+      - redis
+
+networks:
+  boissi-net:
+    driver: bridge
