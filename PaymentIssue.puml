@@ -1,0 +1,22 @@
+@startuml
+title Payment system retry issue usecase
+
+Client -> "Payment system": Payment request with negative total
+note right of "Payment system"
+Can't make a payment with negative total,
+that's our way to trigger an error in payment
+end note
+"Payment system" -> "Payment system": Throw an error, total is negative
+"Payment system" -> Client: PaymentResponse: \nFailed
+
+Client -> "Payment system": Payment request with negative total
+"Payment system" -> "Payment system": Throw an error, total is negative
+"Payment system" -> Client: PaymentResponse: \nFailed
+
+Client -> "Payment system": Payment request
+"Payment system" -> "Redis": Save payment with success status
+"Redis" -> "Redis": Save
+"Redis" -> "Payment system": Success
+"Payment system" -> Client: PaymentResponse: \nSuccess
+@enduml
+
