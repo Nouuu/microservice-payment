@@ -4,6 +4,6 @@ title Payment system get payments
 Client -> "Payment system": Get payment request
 "Payment system" -> "Redis": Retrieve succeeded payments
 "Redis" -> "Payment system": Payment List
-"Payment system" -> Client: PaymentsResponse: \nList of payment
+"Payment system" -> Client: PaymentsResponse: \nList of succeeded payments
 @enduml
 
