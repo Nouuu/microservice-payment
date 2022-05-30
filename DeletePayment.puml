@@ -1,0 +1,9 @@
+@startuml
+title Payment system delete payment
+
+Client -> "Payment system": Delete payment request with {**checkoutId**}
+"Payment system" -> "Redis": Delete payment\n With given {**checkoutId**}
+"Redis" -> "Payment system": //Deleted//
+"Payment system" -> Client: PaymentResponse: \n//Deleted//
+@enduml
+
