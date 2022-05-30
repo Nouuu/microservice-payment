@@ -1,0 +1,9 @@
+@startuml
+title Payment system get payment
+
+Client -> "Payment system": Get payment request with {checkoutId}
+"Payment system" -> "Redis": Retrieve succeeded payment\n With given {checkoutId}
+"Redis" -> "Payment system": Payment
+"Payment system" -> Client: PaymentsResponse: \nSucceeded payment entity
+@enduml
+
