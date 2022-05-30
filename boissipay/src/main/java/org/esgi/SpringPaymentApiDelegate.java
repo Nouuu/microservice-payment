@@ -30,7 +30,9 @@ public class SpringPaymentApiDelegate implements PaymentApiDelegate {
             response.setPaymentStatus(PaymentStatus.FAILURE);
         } else {
             response.setPaymentStatus(PaymentStatus.SUCCESS);
-            jedisPool.sadd(payment.getCheckoutId().toString(), payment.toString());
+            if (!jedisPool.hexists("payment", payment.getCheckoutId().toString())) {
+                jedisPool.hset("payment",payment.getCheckoutId().toString(), payment.toString());
+            }
         }
         return response;
     }
