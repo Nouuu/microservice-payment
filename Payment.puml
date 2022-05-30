@@ -4,7 +4,7 @@ title Payment system regular usecase
 Client -> "Payment system": Payment request
 "Payment system" -> "Redis": Save payment with success status
 "Redis" -> "Redis": Save
-"Redis" -> "Payment system": \nSuccess
-"Payment system" -> Client: PaymentResponse: \nSuccess
+"Redis" -> "Payment system": \n//Success//
+"Payment system" -> Client: PaymentResponse: \n//Success//
 @enduml
 
