@@ -1,0 +1,9 @@
+@startuml
+title Payment system delete payment issue not found
+
+Client -> "Payment system": Delete payment request with {**checkoutId**}
+"Payment system" -> "Redis": Delete payment\n With given {**checkoutId**}
+"Redis" ->x "Payment system": //Not found//
+"Payment system" ->x Client: PaymentResponse: \nNot found
+@enduml
+
