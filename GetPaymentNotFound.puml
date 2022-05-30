@@ -1,0 +1,9 @@
+@startuml
+title Payment system get payment issue not found
+
+Client -> "Payment system": Get payment request with {checkoutId}
+"Payment system" -> "Redis": Retrieve succeeded payment\n With given {checkoutId}
+"Redis" ->x "Payment system": Not found
+"Payment system" -> Client: PaymentsResponse: \nNot found
+@enduml
+
