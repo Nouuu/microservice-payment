@@ -3,7 +3,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY ./boissipay/ ./boissipay/
 COPY ./specification/ ./specification/
-RUN mvn clean install
+RUN mvn clean install -DskipTests
 
 FROM openjdk:17-alpine
 WORKDIR /app
