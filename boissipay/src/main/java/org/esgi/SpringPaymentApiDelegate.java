@@ -25,6 +25,7 @@ public class SpringPaymentApiDelegate implements PaymentApiDelegate {
     public PaymentResponse pay(Payment payment) {
         var totalAmount = payment.getPaymentOrders().stream().mapToDouble(PaymentOrder::getAmount).sum();
         var response = new PaymentResponse();
+        response.setCheckoutId(payment.getCheckoutId());
 
         if (totalAmount < 0) {
             response.setPaymentStatus(PaymentStatus.FAILURE);
