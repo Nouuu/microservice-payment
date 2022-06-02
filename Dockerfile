@@ -13,5 +13,7 @@ EXPOSE 8080
 
 ENV REDIS_HOST=localhost\
     REDIS_PORT=6379
+    REDIS_TLL=86400
+    # REDIS_TLL : 1 day
 
 CMD ["java", "-jar","-Dspring.profiles.active=env", "/app/boissipay.jar"]

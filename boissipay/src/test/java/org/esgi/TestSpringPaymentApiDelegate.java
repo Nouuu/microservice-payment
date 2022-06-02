@@ -7,6 +7,7 @@ import org.esgi.boissipay.model.PaymentResponse;
 import org.esgi.boissipay.model.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -78,6 +79,7 @@ class TestSpringPaymentApiDelegate {
     @BeforeEach
     public void setUp() {
         jedisPooled = new JedisPooled(redis.getHost(), redis.getFirstMappedPort());
+
         springPaymentApiDelegate = new SpringPaymentApiDelegate(jedisPooled);
 
         var buyerInfo = setupBuyerInfo();
@@ -93,9 +95,8 @@ class TestSpringPaymentApiDelegate {
 
         var payementResponse = springPaymentApiDelegate.pay(validPayment);
         assertThat(payementResponse).isEqualTo(expectedResponse);
-        var payment = jedisPooled.hget("payment", validPayment.getCheckoutId().toString());
+        var payment = jedisPooled.get("payment:" + validPayment.getCheckoutId().toString());
         assertThat(payment).isEqualTo(validPayment.toString());
-        assertThat(jedisPooled.hlen("payment")).isEqualTo(1);
     }
 
     @Test
@@ -106,7 +107,6 @@ class TestSpringPaymentApiDelegate {
 
         var payementResponse = springPaymentApiDelegate.pay(invalidPayment);
         assertThat(payementResponse).isEqualTo(expectedResponse);
-        assertThat(jedisPooled.hlen("payment")).isZero();
     }
 
     @Test
@@ -118,6 +118,5 @@ class TestSpringPaymentApiDelegate {
         springPaymentApiDelegate.pay(validPayment);
         var payementResponse = springPaymentApiDelegate.pay(validPayment);
         assertThat(payementResponse).isEqualTo(expectedResponse);
-        assertThat(jedisPooled.hlen("payment")).isEqualTo(1);
     }
 }
